@@ -39,65 +39,76 @@ public class MutantServiceTest {
 	
 	@Test
 	public void testFindXGenReturnsTrueWhenVerticalSequenceFound() {
-		final Accumulator accumulator = new Accumulator(6);
 		final String[] dna = {
 		//               012345
 						".T...T",
 						".T...T",
 						".T...T",
 						".T...T"};
-		final String genPair1 = dna[0] + dna[1];
-		mutantService.findXGen(genPair1, accumulator, 0, false);
-		final String genPair2 = dna[1] + dna[2];
-		mutantService.findXGen(genPair2, accumulator, 1, false);
-		final String genPair3 = dna[2] + dna[3];
-		assertThat(mutantService.findXGen(genPair3, accumulator, 2, true)).isTrue();
+		testFindXGen(dna, true);
 	}
 
 	@Test
 	public void testFindXGenReturnsFalseWhenNoVerticalSequenceFound() {
-		final Accumulator accumulator = new Accumulator(6);
 		final String[] dna = {
 		//               012345
 						".T...T",
 						".....T",
 						".T...T",
 						".T...T"};
-		final String genPair1 = dna[0] + dna[1];
-		mutantService.findXGen(genPair1, accumulator, 0, false);
-		final String genPair2 = dna[1] + dna[2];
-		mutantService.findXGen(genPair2, accumulator, 1, false);
-		final String genPair3 = dna[2] + dna[3];
-		assertThat(mutantService.findXGen(genPair3, accumulator, 2, true)).isFalse();
+		testFindXGen(dna, false);
 	}
 	
 	@Test
 	public void testFindXGenReturnsTrueWhenVerticalAndHorizontalSequenceFound() {
-		Accumulator accumulator = new Accumulator(6);
-		//               012345012345
-		String genPair1="ATGCAGCTACCT";
-		mutantService.findXGen(genPair1, accumulator, 0, false);
-		String genPair2="TTTTCTATGTAG";
-		mutantService.findXGen(genPair2, accumulator, 1, false);
-		String genPair3="ATGCAGCTACCT";
-		assertThat(mutantService.findXGen(genPair3, accumulator, 2, true)).isTrue();
+		final String[] dna = {
+		//               012345
+						".T...T",
+						"..TTTT",
+						".T...T",
+						".T...T"};
+		testFindXGen(dna, true);
 	}
 
 	@Test
 	public void testFindXGenReturnsTrueWhenDiagonal_NW_SW_SequenceFound() {
-		final Accumulator accumulator = new Accumulator(6);
 		final String[] dna = {
 		//               012345
 						"TATTTT",
 				        "TTATTT",
 		                "TTTATT",
 						"TTTTAT"};
-		final String genPair1 = dna[0] + dna[1];
-		mutantService.findXGen(genPair1, accumulator, 0, false);
-		final String genPair2 = dna[1] + dna[2];
-		mutantService.findXGen(genPair2, accumulator, 1, false);
-		final String genPair3 = dna[2] + dna[3];
-		assertThat(mutantService.findXGen(genPair3, accumulator, 2, true)).isTrue();
+		testFindXGen(dna, true);
 	}
 
+	private void testFindXGen(String[] dna, boolean expectedResult) {
+		final Accumulator accumulator =
+				new Accumulator(6);
+		final String genPair1 =
+				dna[0] + dna[1];
+		mutantService
+		.findXGen(
+				genPair1,
+				accumulator,
+				0,
+				false);
+		final String genPair2 =
+				dna[1] + dna[2];
+		mutantService
+		.findXGen(
+				genPair2,
+				accumulator,
+				1,
+				false);
+		final String genPair3 =
+				dna[2] + dna[3];
+		assertThat(
+			mutantService
+			.findXGen(
+					genPair3,
+					accumulator,
+					2,
+					true))
+			.isEqualTo(expectedResult);
+	}
 }
