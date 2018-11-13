@@ -3,21 +3,16 @@ package com.traskindustries.service;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
 
-import com.traskindustries.service.MutantService.Accumulator;
 
 
 public class MutantServiceTest {
 	
 	private static MutantService mutantService = new MutantService();
-	
+
 	@Test
 	public void testFindXGenReturnsTrueWhenHorizontalSequenceFound() {
-		final Accumulator accumulator = new Accumulator(6);
+		final GeneticAccumulator accumulator = new GeneticAccumulator().initialize(6);
 		final String[] dna = {
 		//               012345
 						".TTTT.",
@@ -28,7 +23,7 @@ public class MutantServiceTest {
 
 	@Test
 	public void testFindXGenReturnsFalseWhenNoHorizontalSequenceFound() {
-		final Accumulator accumulator = new Accumulator(6);
+		final GeneticAccumulator accumulator = new GeneticAccumulator().initialize(6);
 		final String[] dna = {
 		//               012345
 						".TTT..",
@@ -71,19 +66,31 @@ public class MutantServiceTest {
 	}
 
 	@Test
-	public void testFindXGenReturnsTrueWhenDiagonal_NW_SW_SequenceFound() {
+	public void testFindXGenReturnsTrueWhenDiagonal_NW_SE_SequenceFound() {
 		final String[] dna = {
 		//               012345
-						"TATTTT",
-				        "TTATTT",
-		                "TTTATT",
-						"TTTTAT"};
+						".A....",
+				        "..A...",
+		                "...A..",
+						"....A."};
+		testFindXGen(dna, true);
+	}
+
+	@Test
+	public void testFindXGenReturnsTrueWhenDiagonal_NE_SW_SequenceFound() {
+		final String[] dna = {
+				//               012345
+				"....A.",
+				"...A..",
+				"..A...",
+				".A...."};
 		testFindXGen(dna, true);
 	}
 
 	private void testFindXGen(String[] dna, boolean expectedResult) {
-		final Accumulator accumulator =
-				new Accumulator(6);
+		final GeneticAccumulator accumulator =
+				new GeneticAccumulator()
+				.initialize(6);
 		final String genPair1 =
 				dna[0] + dna[1];
 		mutantService

@@ -1,25 +1,36 @@
 package com.traskindustries.service;
 
-import java.util.Arrays;
+import java.util.Objects;
 
+import com.traskindustries.genetics.mutants.XGenIdentificationAccumulator;
+import com.traskindustries.genetics.DNAStream;
 import org.springframework.stereotype.Service;
 
 import com.traskindustries.exception.DNAIncoherenceException;
 
 @Service
 public class MutantService {
+
 	public boolean isMutant(String[] dna) {
-		if (null == dna 
-			|| dna.length == 0 
+		Objects.requireNonNull(dna);
+		if (dna.length == 0
 			|| dna.length != dna[0].length() ) {
 			throw new DNAIncoherenceException();
 		}
+		return DNAStream
+			.fromStringArray(dna)
+			.containsGen(
+				new XGenIdentificationAccumulator());
+/*
+
+
 		final Integer referenceGenSize = 
 				dna[0].length();
 		String lastGen = 
 				dna[0];
-		final Accumulator accumulator = 
-				new Accumulator(referenceGenSize);
+		final GeneticAccumulator accumulator =
+				new GeneticAccumulator()
+				.initialize(referenceGenSize);
 		for(int i=1; i<dna.length; i++) {
 			final String gen = 
 					dna[i];
@@ -39,6 +50,7 @@ public class MutantService {
 			lastGen = gen;
 		}
 		return false;
+		*/
 	}
 	
 	private void validateGenSizeIsCoherent(final Integer referenceGenSize,
@@ -49,7 +61,7 @@ public class MutantService {
 	}
 	
 	public boolean findXGen(final String genPair, 
-						  final Accumulator accumulator,
+						  final GeneticAccumulator accumulator,
 						  final int genNumber,
 						  final boolean isLastPair) {
 		final char[] bases = genPair.toCharArray();
@@ -85,87 +97,5 @@ public class MutantService {
 			}
 		}
 		return false;
-	}
-	
-	public static class Accumulator {
-		private int genMatch = 0;
-		private int horizontalCounter = 0;
-		private int[] verticalCounter;
-		private int[] nwToseCounter;
-		private int[] neToswCounter;
-		public Accumulator(final int genSize) {
-			verticalCounter = 
-					new int[genSize];
-			nwToseCounter = 
-					new int[genSize * 2];
-			neToswCounter = 
-					new int[genSize * 2];
-		}
-		public Accumulator compareHorizontal(final char x,
-											 final char y) {
-			if (x == y && x != '.') {
-				horizontalCounter =
-						(horizontalCounter == 0) ? 2
-						: horizontalCounter + 1;
-				if (horizontalCounter == 4) {
-					genMatch++;
-				}
-			} else {
-				horizontalCounter = 0;
-			}
-			return this;
-		}
-		public Accumulator compareVertical(final char x,
-										   final char y,
-										   int position) {
-			if (x == y && x != '.') {
-				verticalCounter[position] =
-						(verticalCounter[position] == 0) ? 2
-						: verticalCounter[position] + 1;
-				if (verticalCounter[position] == 4) {
-					genMatch++;
-				}
-			} else {
-				verticalCounter[position] = 0;
-			}
-			return this;
-		}
-		public Accumulator compareNwToSe(final char x,
-			   							 final char y,
-		   								 int position) {
-			if (x == y && x != '.') {
-				nwToseCounter[position] =
-						(nwToseCounter[position] == 0) ? 2
-						: nwToseCounter[position] + 1;
-				if (nwToseCounter[position] == 4) {
-					genMatch++;
-				}
-			} else {
-				nwToseCounter[position] = 0;
-			}
-			return this;
-		}
-		public Accumulator compareNeToSw(final char x,
-					 					 final char y,
-					 					 int position) {
-			if (x == y && x != '.') {
-				neToswCounter[position] =
-						(neToswCounter[position] == 0) ? 2
-						: neToswCounter[position] + 1;
-				if (neToswCounter[position] == 4) {
-					genMatch++;
-				}
-			} else {
-				neToswCounter[position] = 0;
-			}
-			return this;
-		}					
-		public Accumulator resetHorizontalCounter() {
-			horizontalCounter=0;
-			return this;
-		}
-		public boolean verifyCounters() {
-			return genMatch > 1;
-		}
 	}
 }
