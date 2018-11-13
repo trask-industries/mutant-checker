@@ -56,11 +56,13 @@ public class MutantService {
 		final int genSize = bases.length / 2;
 		accumulator
 		.resetHorizontalCounter();
+		accumulator
+		.compareVertical(bases[0], bases[genSize], 0);
 		for (int i=1; i<genSize; i++) {
 			accumulator
 			.compareHorizontal(bases[i-1], bases[i]);
 			accumulator
-			.compareVertical(bases[i-1], bases[i-1+genSize], i-1);
+			.compareVertical(bases[i], bases[i+genSize], i);
 			if(i<genPair.length()-1) {
 				accumulator
 				.compareNwToSe(bases[i-1],  bases[i+genSize], i-1-genNumber+genSize);
