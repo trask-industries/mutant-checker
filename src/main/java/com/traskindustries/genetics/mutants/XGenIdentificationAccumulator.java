@@ -11,19 +11,56 @@ public class XGenIdentificationAccumulator implements GenIdentificationAccumulat
     private int[] verticalCounter;
     private int[] nwToseCounter;
     private int[] neToswCounter;
+    private int genNumber = 0;
+    private boolean firstReduction = true;
 
     @Override
     public Boolean apply(
             final String x,
             final String y) {
+        boolean isGenIdentified = false;
         if (!initialized) {
             initialize(x);
         }
         validateGenSizeIsCoherent(y);
-        return genIdentified();
+        resetHorizontalCounter();
+        final char[] bases =
+                x.concat(y).toCharArray();
+        final int genSize =
+                (bases.length / 2);
+        verticalCounter[0] =
+            compareBases(bases[0], bases[genSize], verticalCounter[0]);
+        for (int i = 1; i < genSize; i++) {
+            verticalCounter[i] =
+                compareBases(bases[i], bases[i+genSize], verticalCounter[i]);
+            if (firstReduction) {
+                horizontalCounter =
+                    compareBases(bases[i - 1], bases[i], horizontalCounter);
+            }
+            horizontalCounter =
+                compareBases(bases[i-1+genSize], bases[i+genSize], horizontalCounter);
+            if(i < bases.length - 1) {
+                int offset =
+                    i - 1 - genNumber + genSize;
+                nwToseCounter[offset] =
+                    compareBases(bases[i-1], bases[i+genSize], nwToseCounter[offset]);
+            }
+            int offset =
+                    i + genNumber;
+            neToswCounter[offset] =
+                compareBases(bases[i], bases[i-1+genSize], neToswCounter[offset]);
+            isGenIdentified =
+                genIdentified();
+            if (isGenIdentified) {
+                break;
+            }
+        }
+        genNumber++;
+        firstReduction = false;
+        return isGenIdentified;
     }
 
-    public void initialize(
+    private void initialize(
             final String firstGen) {
         referenceGenSize =
                 firstGen.length();
@@ -46,7 +83,27 @@ public class XGenIdentificationAccumulator implements GenIdentificationAccumulat
         }
     }
 
-    public boolean genIdentified() {
+    private boolean genIdentified() {
         return sequenceMatchCount > 1;
+    }
+
+    private void resetHorizontalCounter() {
+        horizontalCounter = 0;
+    }
+
+    private int compareBases(
+            final char x,
+            final char y,
+            final int lastCounter) {
+        if (x == y && x != '.') {
+            int result =
+                (lastCounter == 0) ? 2 : lastCounter + 1;
+            if (result == 4) {
+                sequenceMatchCount++;
+            }
+            return result;
+        } else {
+           return 0;
+        }
     }
 }
