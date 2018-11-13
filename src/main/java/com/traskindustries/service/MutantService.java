@@ -32,7 +32,8 @@ public class MutantService {
 			if (findXGen(
 					genPair, 
 					accumulator,
-					i)) {
+					i,
+					i == dna.length-1)) {
 				return true;
 			}
 			lastGen = gen;
@@ -49,7 +50,8 @@ public class MutantService {
 	
 	public boolean findXGen(final String genPair, 
 						  final Accumulator accumulator,
-						  final int genNumber) {
+						  final int genNumber,
+						  final boolean isLastPair) {
 		final char[] bases = genPair.toCharArray();
 		final int genSize = bases.length / 2;
 		accumulator
@@ -68,6 +70,16 @@ public class MutantService {
 			if (accumulator
 				.verifyCounters()) {
 				return true;
+			}
+		}
+		if (isLastPair) {
+			for (int i=genSize+1; i<genPair.length(); i++) {
+				accumulator
+				.compareHorizontal(bases[i-1], bases[i]);
+				if (accumulator
+					.verifyCounters()) {
+						return true;
+					}
 			}
 		}
 		return false;
@@ -108,6 +120,9 @@ public class MutantService {
 				verticalCounter[position] =
 						(verticalCounter[position] == 0) ? 2
 						: verticalCounter[position] + 1;
+				if (verticalCounter[position] == 4) {
+					genMatch++;
+				}
 			} else {
 				verticalCounter[position] = 0;
 			}
@@ -120,6 +135,9 @@ public class MutantService {
 				nwToseCounter[position] =
 						(nwToseCounter[position] == 0) ? 2
 						: nwToseCounter[position] + 1;
+				if (nwToseCounter[position] == 4) {
+					genMatch++;
+				}
 			} else {
 				nwToseCounter[position] = 0;
 			}
@@ -132,6 +150,9 @@ public class MutantService {
 				neToswCounter[position] =
 						(neToswCounter[position] == 0) ? 2
 						: neToswCounter[position] + 1;
+				if (neToswCounter[position] == 4) {
+					genMatch++;
+				}
 			} else {
 				neToswCounter[position] = 0;
 			}
@@ -142,7 +163,7 @@ public class MutantService {
 			return this;
 		}
 		public boolean verifyCounters() {
-			return genMatch > 0;
+			return genMatch > 1;
 			/*
 			int totalCounter = horizontalCounter
 				+ Arrays.stream(verticalCounter).max().getAsInt()

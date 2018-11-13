@@ -19,9 +19,31 @@ public class MutantServiceTest {
 	
 	@Test
 	public void testFindXGenReturnsTrueHorizontalSequence() {
-		String genPair="TAAAACGCTTTT";
 		Accumulator accumulator = new Accumulator(6);
-		assertThat(mutantService.findXGen(genPair, accumulator, 0)).isTrue();
+		String genPair="TAAAACGCTTTT";
+		assertThat(mutantService.findXGen(genPair, accumulator, 0, true)).isTrue();
+	}
+	
+	@Test
+	public void testFindXGenReturnsTrueVerticatalSequence() {
+		Accumulator accumulator = new Accumulator(6);
+		String genPair1="ATGCAGCTACCT";
+		mutantService.findXGen(genPair1, accumulator, 0, false);
+		String genPair2="CTACCTATGCAG";
+		mutantService.findXGen(genPair2, accumulator, 0, false);
+		String genPair3="ATGCAGCTACCT";
+		assertThat(mutantService.findXGen(genPair3, accumulator, 0, true)).isTrue();
+	}
+	
+	@Test
+	public void testFindXGenReturnsTrueVerticatalAndHorizontalSequence() {
+		Accumulator accumulator = new Accumulator(6);
+		String genPair1="ATGCAGCTACCT";
+		mutantService.findXGen(genPair1, accumulator, 0, false);
+		String genPair2="TTTTCTATGTAG";
+		mutantService.findXGen(genPair2, accumulator, 0, false);
+		String genPair3="ATGCAGCTACCT";
+		assertThat(mutantService.findXGen(genPair3, accumulator, 0, true)).isTrue();
 	}
 
 }
