@@ -63,7 +63,7 @@ public class MutantService {
 			.compareVertical(bases[i-1], bases[i-1+genSize], i-1);
 			if(i<genPair.length()-1) {
 				accumulator
-				.compareNwToSe(bases[i-1],  bases[i+genSize], i-1-genNumber);
+				.compareNwToSe(bases[i-1],  bases[i+genSize], i-1-genNumber+genSize);
 			}
 			accumulator
 			.compareNeToSw(bases[i],  bases[i-1+genSize], i+genNumber);
@@ -95,13 +95,13 @@ public class MutantService {
 			verticalCounter = 
 					new int[genSize];
 			nwToseCounter = 
-					new int[genSize];
+					new int[genSize * 2];
 			neToswCounter = 
-					new int[genSize];
+					new int[genSize * 2];
 		}
 		public Accumulator compareHorizontal(final char x,
 											 final char y) {
-			if (x == y) {
+			if (x == y && x != '.') {
 				horizontalCounter =
 						(horizontalCounter == 0) ? 2
 						: horizontalCounter + 1;
@@ -116,7 +116,7 @@ public class MutantService {
 		public Accumulator compareVertical(final char x,
 										   final char y,
 										   int position) {
-			if (x == y) {
+			if (x == y && x != '.') {
 				verticalCounter[position] =
 						(verticalCounter[position] == 0) ? 2
 						: verticalCounter[position] + 1;
@@ -131,7 +131,7 @@ public class MutantService {
 		public Accumulator compareNwToSe(final char x,
 			   							 final char y,
 		   								 int position) {
-			if (x == y) {
+			if (x == y && x != '.') {
 				nwToseCounter[position] =
 						(nwToseCounter[position] == 0) ? 2
 						: nwToseCounter[position] + 1;
@@ -146,7 +146,7 @@ public class MutantService {
 		public Accumulator compareNeToSw(final char x,
 					 					 final char y,
 					 					 int position) {
-			if (x == y) {
+			if (x == y && x != '.') {
 				neToswCounter[position] =
 						(neToswCounter[position] == 0) ? 2
 						: neToswCounter[position] + 1;
@@ -164,13 +164,6 @@ public class MutantService {
 		}
 		public boolean verifyCounters() {
 			return genMatch > 1;
-			/*
-			int totalCounter = horizontalCounter
-				+ Arrays.stream(verticalCounter).max().getAsInt()
-				+ Arrays.stream(nwToseCounter).max().getAsInt()
-				+ Arrays.stream(neToswCounter).max().getAsInt();
-			return totalCounter >= 8;
-			*/
 		}
 	}
 }
