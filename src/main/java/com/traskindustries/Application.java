@@ -1,12 +1,12 @@
-package com.traskindustries.mutantchecker;
+package com.traskindustries;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class MeliLastStandingApplication {
+public class Application {
 
 	public static void main(String[] args) {
-		SpringApplication.run(MeliLastStandingApplication.class, args);
+		SpringApplication.run(Application.class, args);
 	}
 }
