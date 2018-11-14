@@ -22,7 +22,6 @@ public class HumanDNAValidator implements ConstraintValidator<MustBeHumanDNA, St
                .allMatch(gen -> {
                    boolean matches = HumanDNAPattern.matcher(gen).matches();
                    return matches;
-
                });
     }
 }
