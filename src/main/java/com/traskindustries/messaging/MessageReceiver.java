@@ -1,5 +1,7 @@
 package com.traskindustries.messaging;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.traskindustries.messages.PersistDNACheckMessage;
 import com.traskindustries.model.CheckedDNA;
 import com.traskindustries.repository.CheckedDNARepository;
 import org.apache.log4j.Logger;
@@ -14,14 +16,20 @@ public class MessageReceiver {
     @Autowired
     CheckedDNARepository checkedDNARepository;
 
+    @Autowired
+    ObjectMapper mapper;
+
     public void receiveMessage(String message) {
-        System.out.println("<<<< Received <" + message + ">");
+        LOG.info("<<<< Received msg: <" + message + ">");
         try {
+            final PersistDNACheckMessage persistDNACheckMessage =
+                    mapper
+                    .readValue(message, PersistDNACheckMessage.class);
             final CheckedDNA checkedDNAToSave =
                     new CheckedDNA
                             .Builder()
-                            .dna("aa")
-                            .result(true)
+                            .dna(persistDNACheckMessage.getDna())
+                            .result(persistDNACheckMessage.isResult())
                             .build();
             checkedDNARepository
                     .save(checkedDNAToSave);
