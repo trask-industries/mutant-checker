@@ -1,109 +1,107 @@
-package com.traskindustries.genetics.mutants;
+package com.traskindustries.genetics;
 
+import com.traskindustries.genetics.mutants.XGenIdentificationAccumulator;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class XGenIdentificationAccumulatorTests {
+public class DNAStreamTest {
 
     @Test
     public void testFindXGenReturnsTrueWhenHorizontalSequenceFound() {
         final String[] dna = {
-        //       012345
+                //       012345
                 "......",
                 "TTTT..",
                 ".TTTT.",
                 "......"};
-        testAccumulator(dna, true);
+        testDNAStreamWithXGenIdentificationAccumulator(dna, true);
     }
 
     @Test
     public void testFindXGenReturnsFalseWhenNoHorizontalSequenceFound() {
         final String[] dna = {
-        //       012345
+                //       012345
                 "..TTTT",
                 "......",
                 ".TTT..",
                 "......"};
-        testAccumulator(dna, false);
+        testDNAStreamWithXGenIdentificationAccumulator(dna, false);
     }
 
     @Test
     public void testFindXGenReturnsTrueWhenVerticalSequenceFound() {
         final String[] dna = {
-        //       012345
+                //       012345
                 ".T...T",
                 ".T...T",
                 ".T...T",
                 ".T...T"};
-        testAccumulator(dna, true);
+        testDNAStreamWithXGenIdentificationAccumulator(dna, true);
     }
 
     @Test
     public void testFindXGenReturnsFalseWhenNoVerticalSequenceFound() {
         final String[] dna = {
-        //       012345
+                //       012345
                 ".T...T",
                 ".....T",
                 ".T...T",
                 ".T...T"};
-        testAccumulator(dna, false);
+        testDNAStreamWithXGenIdentificationAccumulator(dna, false);
     }
 
     @Test
     public void testFindXGenReturnsTrueWhenVerticalAndHorizontalSequenceFound() {
         final String[] dna = {
-        //       012345
+                //       012345
                 ".T...T",
                 "..TTTT",
                 ".T...T",
                 ".T...T"};
-        testAccumulator(dna, true);
+        testDNAStreamWithXGenIdentificationAccumulator(dna, true);
     }
 
     @Test
     public void testFindXGenReturnsTrueWhenDiagonal_NW_SE_SequenceFound() {
         final String[] dna = {
-        //       012345
+                //       012345
                 ".AT...",
                 "..AT..",
                 "...AT.",
                 "....AT"};
-        testAccumulator(dna, true);
+        testDNAStreamWithXGenIdentificationAccumulator(dna, true);
     }
 
     @Test
     public void testFindXGenReturnsTrueWhenDiagonal_NE_SW_SequenceFound() {
         final String[] dna = {
-        //       012345
+                //       012345
                 "....AT",
                 "...AT.",
                 "..AT..",
                 ".AT..."};
-        testAccumulator(dna, true);
+        testDNAStreamWithXGenIdentificationAccumulator(dna, true);
     }
 
     @Test
     public void testFindXGenReturnsTrueWhenCombinedSequenceFound() {
         final String[] dna = {
-        //       012345
+                //       012345
                 "A....T",
                 "A...T.",
                 "A..T..",
                 "A.TTTT"};
-        testAccumulator(dna, true);
+        testDNAStreamWithXGenIdentificationAccumulator(dna, true);
     }
 
-    private void testAccumulator(String[] dna, boolean expectedResult) {
-        final XGenIdentificationAccumulator accumulator =
-                new XGenIdentificationAccumulator();
-        accumulator
-            .apply(dna[0], dna[1]);
-        accumulator
-            .apply(dna[1] , dna[2]);
-        boolean result =
-                accumulator
-                .apply(dna[2] , dna[3]);
+    private void testDNAStreamWithXGenIdentificationAccumulator(String[] dna, boolean expectedResult) {
+        final DNAStream dnaStream =
+                DNAStream.fromStringArray(dna);
+        final boolean result =
+                dnaStream
+                .containsGen(new XGenIdentificationAccumulator());
         assertThat(result).isEqualTo(expectedResult);
     }
+
 }
