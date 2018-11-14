@@ -1,5 +1,6 @@
 package com.traskindustries.genetics.mutants;
 
+import com.traskindustries.service.GeneticAccumulator;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -7,13 +8,79 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class XGenIdentificationAccumulatorTests {
 
     @Test
+    public void testFindXGenReturnsTrueWhenHorizontalSequenceFound() {
+        final String[] dna = {
+        //       012345
+                "......",
+                "TTTT..",
+                ".TTTT.",
+                "......"};
+        testFindXGen(dna, true);
+    }
+
+    @Test
+    public void testFindXGenReturnsFalseWhenNoHorizontalSequenceFound() {
+        final String[] dna = {
+        //       012345
+                "..TTTT",
+                "......",
+                ".TTT..",
+                "......"};
+        testFindXGen(dna, false);
+    }
+
+    @Test
     public void testFindXGenReturnsTrueWhenVerticalSequenceFound() {
         final String[] dna = {
-                //               012345
+        //       012345
                 ".T...T",
                 ".T...T",
                 ".T...T",
                 ".T...T"};
+        testFindXGen(dna, true);
+    }
+
+    @Test
+    public void testFindXGenReturnsFalseWhenNoVerticalSequenceFound() {
+        final String[] dna = {
+        //       012345
+                ".T...T",
+                ".....T",
+                ".T...T",
+                ".T...T"};
+        testFindXGen(dna, false);
+    }
+
+    @Test
+    public void testFindXGenReturnsTrueWhenVerticalAndHorizontalSequenceFound() {
+        final String[] dna = {
+        //       012345
+                ".T...T",
+                "..TTTT",
+                ".T...T",
+                ".T...T"};
+        testFindXGen(dna, true);
+    }
+
+    @Test
+    public void testFindXGenReturnsTrueWhenDiagonal_NW_SE_SequenceFound() {
+        final String[] dna = {
+        //       012345
+                ".A....",
+                "..A...",
+                "...A..",
+                "....A."};
+        testFindXGen(dna, true);
+    }
+
+    @Test
+    public void testFindXGenReturnsTrueWhenDiagonal_NE_SW_SequenceFound() {
+        final String[] dna = {
+        //       012345
+                "....A.",
+                "...A..",
+                "..A...",
+                ".A...."};
         testFindXGen(dna, true);
     }
 

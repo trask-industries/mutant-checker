@@ -7,7 +7,8 @@ public class XGenIdentificationAccumulator implements GenIdentificationAccumulat
     private boolean initialized = false;
     private Integer referenceGenSize = 0;
     private int sequenceMatchCount = 0;
-    private int horizontalCounter = 0;
+    private int horizontalCounterX = 0;
+    private int horizontalCounterY = 0;
     private int[] verticalCounter;
     private int[] nwToseCounter;
     private int[] neToswCounter;
@@ -34,11 +35,11 @@ public class XGenIdentificationAccumulator implements GenIdentificationAccumulat
             verticalCounter[i] =
                 compareBases(bases[i], bases[i+genSize], verticalCounter[i]);
             if (firstReduction) {
-                horizontalCounter =
-                    compareBases(bases[i - 1], bases[i], horizontalCounter);
+                horizontalCounterX =
+                    compareBases(bases[i - 1], bases[i], horizontalCounterX);
             }
-            horizontalCounter =
-                compareBases(bases[i-1+genSize], bases[i+genSize], horizontalCounter);
+            horizontalCounterY =
+                compareBases(bases[i-1+genSize], bases[i+genSize], horizontalCounterY);
             if(i < bases.length - 1) {
                 int offset =
                     i - 1 - genNumber + genSize;
@@ -88,7 +89,8 @@ public class XGenIdentificationAccumulator implements GenIdentificationAccumulat
     }
 
     private void resetHorizontalCounter() {
-        horizontalCounter = 0;
+        horizontalCounterX = 0;
+        horizontalCounterY = 0;
     }
 
     private int compareBases(
