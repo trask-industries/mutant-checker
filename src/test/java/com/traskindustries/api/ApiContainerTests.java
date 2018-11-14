@@ -12,7 +12,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.traskindustries.messages.*;
-import org.springframework.test.web.servlet.MvcResult;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -41,7 +40,7 @@ public class ApiContainerTests {
                 "AAAAAA",
                 "TTTTAA",
                 "AAAAAA"};
-        final VerifyIsMutantRequest request  =
+        final VerifyIsMutantRequest request =
                 new VerifyIsMutantRequest(dna);
         final String requestString =
                 mapper
@@ -51,7 +50,9 @@ public class ApiContainerTests {
             post(BASE_PATH)
             .content(requestString)
             .contentType(MediaType.APPLICATION_JSON))
-        .andExpect(status().isOk());
+        .andExpect(
+            status()
+            .isOk());
     }
 
     @Test
@@ -69,13 +70,15 @@ public class ApiContainerTests {
                 new VerifyIsMutantRequest(dna);
         final String requestString =
                 mapper
-                        .writeValueAsString(request);
+                .writeValueAsString(request);
         mockMvc
         .perform(
-                post(BASE_PATH)
-                        .content(requestString)
-                        .contentType(MediaType.APPLICATION_JSON))
-        .andExpect(status().isForbidden());
+            post(BASE_PATH)
+                .content(requestString)
+                .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(
+            status()
+            .isForbidden());
     }
 
     @Test
@@ -91,13 +94,15 @@ public class ApiContainerTests {
                 new VerifyIsMutantRequest(dna);
         final String requestString =
                 mapper
-                        .writeValueAsString(request);
+                .writeValueAsString(request);
         mockMvc
         .perform(
-                post(BASE_PATH)
-                        .content(requestString)
-                        .contentType(MediaType.APPLICATION_JSON))
-        .andExpect(status().isBadRequest());
+            post(BASE_PATH)
+                .content(requestString)
+                .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(
+            status()
+            .isBadRequest());
     }
 
     @Test
@@ -115,13 +120,13 @@ public class ApiContainerTests {
                 new VerifyIsMutantRequest(dna);
         final String requestString =
                 mapper
-                        .writeValueAsString(request);
+                .writeValueAsString(request);
         mockMvc
-                .perform(
-                        post(BASE_PATH)
-                                .content(requestString)
-                                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isBadRequest());
+        .perform(
+            post(BASE_PATH)
+                .content(requestString)
+                .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isBadRequest());
     }
 
     @Test
@@ -132,12 +137,12 @@ public class ApiContainerTests {
                 new VerifyIsMutantRequest(dna);
         final String requestString =
                 mapper
-                        .writeValueAsString(request);
+                .writeValueAsString(request);
         mockMvc
-                .perform(
-                        post(BASE_PATH)
-                                .content(requestString)
-                                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isBadRequest());
+            .perform(
+                post(BASE_PATH)
+                    .content(requestString)
+                    .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isBadRequest());
     }
 }
