@@ -6,6 +6,7 @@ import com.traskindustries.model.CheckedDNA;
 import com.traskindustries.repository.CheckedDNARepository;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -24,7 +25,7 @@ public class MessageReceiver {
         try {
             final PersistDNACheckMessage persistDNACheckMessage =
                     mapper
-                    .readValue(message, PersistDNACheckMessage.class);
+                            .readValue(message, PersistDNACheckMessage.class);
             final CheckedDNA checkedDNAToSave =
                     new CheckedDNA
                             .Builder()
@@ -33,6 +34,8 @@ public class MessageReceiver {
                             .build();
             checkedDNARepository
                     .save(checkedDNAToSave);
+        } catch (DataIntegrityViolationException iex) {
+            LOG.warn("DNA already exists!");
         } catch (Exception ex) {
             LOG.error(ex.getMessage(), ex);
         }
