@@ -99,4 +99,28 @@ public class ApiContainerTests {
                         .contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isBadRequest());
     }
+
+    @Test
+    public void testVerifyIsMutantReturnsHttpBadRequestWhenAlienDNA()
+            throws Exception {
+        final String[] dna = {
+        //       012345
+                "CTCTCT",
+                "AGAGAG",
+                "AATTTT",
+                "AAAEAA",
+                "TTTTAA",
+                "AAAAAA"};
+        final VerifyIsMutantRequest request  =
+                new VerifyIsMutantRequest(dna);
+        final String requestString =
+                mapper
+                        .writeValueAsString(request);
+        mockMvc
+                .perform(
+                        post(BASE_PATH)
+                                .content(requestString)
+                                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
+    }
 }
