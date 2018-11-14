@@ -1,0 +1,13 @@
+---
+applications:
+- name: mutant-checker
+  memory: 1024M
+  buildpack: java_buildpack
+  routes:
+  - route: mutant-checker.cfapps.io
+  services:
+  - mutants-mq
+  env:
+    CF_STAGING_TIMEOUT: 15
+    CF_STARTUP_TIMEOUT: 15
+    SPRING_PROFILES_ACTIVE: prod
