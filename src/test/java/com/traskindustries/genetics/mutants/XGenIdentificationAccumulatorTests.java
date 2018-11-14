@@ -1,6 +1,5 @@
 package com.traskindustries.genetics.mutants;
 
-import com.traskindustries.service.GeneticAccumulator;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -66,10 +65,10 @@ public class XGenIdentificationAccumulatorTests {
     public void testFindXGenReturnsTrueWhenDiagonal_NW_SE_SequenceFound() {
         final String[] dna = {
         //       012345
-                ".A....",
-                "..A...",
-                "...A..",
-                "....A."};
+                ".AT...",
+                "..AT..",
+                "...AT.",
+                "....AT"};
         testFindXGen(dna, true);
     }
 
@@ -77,10 +76,21 @@ public class XGenIdentificationAccumulatorTests {
     public void testFindXGenReturnsTrueWhenDiagonal_NE_SW_SequenceFound() {
         final String[] dna = {
         //       012345
-                "....A.",
-                "...A..",
-                "..A...",
-                ".A...."};
+                "....AT",
+                "...AT.",
+                "..AT..",
+                ".AT..."};
+        testFindXGen(dna, true);
+    }
+
+    @Test
+    public void testFindXGenReturnsTrueWhenCombinedSequenceFound() {
+        final String[] dna = {
+                //       012345
+                "A....T",
+                "A...T.",
+                "A..T..",
+                "A.TTTT"};
         testFindXGen(dna, true);
     }
 
