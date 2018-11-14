@@ -27,8 +27,8 @@ public class MutantServiceTest {
 	public void testFindXGenReturnsTrueWhenHorizontalSequenceFound() {
 		final String[] dna = {
 				//       012345
-				".....",
-				".....",
+				"......",
+				"......",
 				"......",
 				"TTTT..",
 				".TTTT.",
@@ -40,8 +40,8 @@ public class MutantServiceTest {
 	public void testFindXGenReturnsFalseWhenNoHorizontalSequenceFound() {
 		final String[] dna = {
 				//       012345
-				".....",
-				".....",
+				"......",
+				"......",
 				"..TTTT",
 				"......",
 				".TTT..",
@@ -52,8 +52,8 @@ public class MutantServiceTest {
 	@Test
 	public void testFindXGenReturnsTrueWhenVerticalSequenceFound() {
 		final String[] dna = {
-				".....",
-				".....",
+				"......",
+				"......",
 				//       012345
 				".T...T",
 				".T...T",
@@ -66,8 +66,8 @@ public class MutantServiceTest {
 	public void testFindXGenReturnsFalseWhenNoVerticalSequenceFound() {
 		final String[] dna = {
 				//       012345
-				".....",
-				".....",
+				"......",
+				"......",
 				".T...T",
 				".....T",
 				".T...T",
@@ -79,8 +79,8 @@ public class MutantServiceTest {
 	public void testFindXGenReturnsTrueWhenVerticalAndHorizontalSequenceFound() {
 		final String[] dna = {
 				//       012345
-				".....",
-				".....",
+				"......",
+				"......",
 				".T...T",
 				"..TTTT",
 				".T...T",
@@ -92,8 +92,8 @@ public class MutantServiceTest {
 	public void testFindXGenReturnsTrueWhenDiagonal_NW_SE_SequenceFound() {
 		final String[] dna = {
 				//       012345
-				".....",
-				".....",
+				"......",
+				"......",
 				".AT...",
 				"..AT..",
 				"...AT.",
@@ -105,8 +105,8 @@ public class MutantServiceTest {
 	public void testFindXGenReturnsTrueWhenDiagonal_NE_SW_SequenceFound() {
 		final String[] dna = {
 				//       012345
-				".....",
-				".....",
+				"......",
+				"......",
 				"....AT",
 				"...AT.",
 				"..AT..",
@@ -118,8 +118,8 @@ public class MutantServiceTest {
 	public void testFindXGenReturnsTrueWhenCombinedSequenceFound() {
 		final String[] dna = {
 				//       012345
-				".....",
-				".....",
+				"......",
+				"......",
 				"A....T",
 				"A...T.",
 				"A..T..",
