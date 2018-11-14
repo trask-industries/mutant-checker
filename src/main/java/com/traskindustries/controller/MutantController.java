@@ -1,7 +1,7 @@
 package com.traskindustries.controller;
 
-import com.traskindustries.dto.VerifyIsMutantRequest;
 import com.traskindustries.service.MutantService;
+import com.traskindustries.messages.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
