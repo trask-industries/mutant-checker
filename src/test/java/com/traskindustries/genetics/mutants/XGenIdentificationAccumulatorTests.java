@@ -7,6 +7,18 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class XGenIdentificationAccumulatorTests {
 
     @Test
+    public void testFindXGenReturnsTrueWhenHorizontalSequenceFoundInImpairMatrix() {
+        final String[] dna = {
+        //       01234
+                ".....",
+                "TTTT.",
+                ".TTTT",
+                "....."};
+        testAccumulator(dna, true);
+    }
+
+
+    @Test
     public void testFindXGenReturnsTrueWhenHorizontalSequenceFound() {
         final String[] dna = {
         //       012345
