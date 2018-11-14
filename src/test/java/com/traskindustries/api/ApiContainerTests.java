@@ -31,7 +31,7 @@ public class ApiContainerTests {
     ObjectMapper mapper;
 
     @Test
-    public void testVerifyIsMutantReturnsHttpOK()
+    public void testVerifyIsMutantReturnsHttpOKWhenValidMutantDNA()
         throws Exception {
         final String[] dna = {
         //       012345
@@ -46,12 +46,57 @@ public class ApiContainerTests {
         final String requestString =
                 mapper
                 .writeValueAsString(request);
-
         mockMvc
         .perform(
             post(BASE_PATH)
             .content(requestString)
             .contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isOk());
+    }
+
+    @Test
+    public void testVerifyIsMutantReturnsHttpForbiddenWhenValidHumanDNA()
+            throws Exception {
+        final String[] dna = {
+        //       012345
+                "CTCTCT",
+                "AGAGAG",
+                "AATCTT",
+                "AAGAAA",
+                "TCTTAA",
+                "AAGAAA"};
+        final VerifyIsMutantRequest request  =
+                new VerifyIsMutantRequest(dna);
+        final String requestString =
+                mapper
+                        .writeValueAsString(request);
+        mockMvc
+        .perform(
+                post(BASE_PATH)
+                        .content(requestString)
+                        .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isForbidden());
+    }
+
+    @Test
+    public void testVerifyIsMutantReturnsHttpBadRequestWhenIncompleteDNA()
+            throws Exception {
+        final String[] dna = {
+        //       012345
+                "AATCTT",
+                "AAGAAA",
+                "TCTTAA",
+                "AAGAAA"};
+        final VerifyIsMutantRequest request  =
+                new VerifyIsMutantRequest(dna);
+        final String requestString =
+                mapper
+                        .writeValueAsString(request);
+        mockMvc
+        .perform(
+                post(BASE_PATH)
+                        .content(requestString)
+                        .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isBadRequest());
     }
 }
