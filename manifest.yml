@@ -7,6 +7,7 @@ applications:
   - route: mutant-checker.cfapps.io
   services:
   - mutants-mq
+  - mutant-scaler
   env:
     CF_STAGING_TIMEOUT: 15
     CF_STARTUP_TIMEOUT: 15
