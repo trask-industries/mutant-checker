@@ -26,3 +26,12 @@ script:
 after_success:
   echo "Do nothing"
 
+deploy:
+    provider: cloudfoundry
+    username: $CF_USER
+    password: $CF_PWD
+    api: https://api.run.pivotal.io
+    organization: gjgs-org
+    space: development
+    manifest: manifest.yml
+
