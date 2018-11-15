@@ -3,6 +3,7 @@ applications:
 - name: mutant-checker
   memory: 1024M
   buildpack: java_buildpack
+  path: target/mutant-checker-0.0.1-SNAPSHOT.jar
   routes:
   - route: mutant-checker.cfapps.io
   services:
