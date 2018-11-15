@@ -11,4 +11,6 @@ public interface CheckedDNARepository extends Repository<CheckedDNA, Long> {
     Long countByResultIsFalse();
 
     Long countByResultIsTrue();
+
+    void deleteAll();
 }
