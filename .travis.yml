@@ -1,0 +1,28 @@
+language: java
+
+sudo: required
+
+java:
+  - 1.8.x
+
+services:
+  - docker
+
+cache:
+  directories:
+  - $HOME/.m2
+
+if: tag IS blank
+
+before_install:
+  echo "Do nothing"
+
+install:
+  echo "Do nothing"
+
+script:
+  - mvn clean install
+
+after_success:
+  echo "Do nothing"
+
