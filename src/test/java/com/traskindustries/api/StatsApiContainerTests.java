@@ -35,7 +35,7 @@ public class StatsApiContainerTests {
     CheckedDNARepository repository;
 
     @Test
-    public void testVerifyGetStatsReturnsHttpOK()
+    public void testVerifyGetStatsReturnsHttpOKWhenDataExists()
             throws Exception {
 
         repository.deleteAll();
@@ -63,5 +63,33 @@ public class StatsApiContainerTests {
         assertThat(stats.getHumans()).isEqualTo(2);
         assertThat(stats.getMutants()).isEqualTo(1);
         assertThat(stats.getRatio()).isBetween(0.0,1.0);
+    }
+
+    @Test
+    public void testVerifyGetStatsReturnsHttpOKWhenNoData()
+            throws Exception {
+
+        repository.deleteAll();
+
+        final MvcResult result =
+                mockMvc
+                        .perform(
+                                get(BASE_PATH))
+                        .andExpect(
+                                status()
+                                        .isOk())
+                        .andReturn();
+
+        GetDNAStatsResponse stats =
+                mapper
+                        .readValue(
+                                result
+                                        .getResponse()
+                                        .getContentAsString(),
+                                GetDNAStatsResponse.class);
+        assertThat(stats).isNotNull();
+        assertThat(stats.getHumans()).isEqualTo(0);
+        assertThat(stats.getMutants()).isEqualTo(0);
+        assertThat(stats.getRatio()).isEqualTo(0);
     }
 }

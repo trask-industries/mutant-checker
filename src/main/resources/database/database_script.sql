@@ -1,8 +1,8 @@
-create schema mutants;
+create DATABASE IF NOT EXISTS mutants;
 
 use mutants;
 
-create table checkeddna (
+create table IF NOT EXISTS checkeddna (
   id bigint not null auto_increment, 
   created datetime, 
   dna longtext, 

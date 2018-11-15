@@ -45,10 +45,11 @@ public class GetDNAStatsResponse {
                     BigDecimal
                     .valueOf(this.humans);
             final BigDecimal ratio =
+                    this.humans > 0.00 && this.mutants > 0.00 ?
                     mutants
                     .divide(
                         humans, 2,
-                        RoundingMode.HALF_UP) ;
+                        RoundingMode.HALF_UP) : BigDecimal.ZERO;
 
             return new GetDNAStatsResponse(
                     this.mutants,
